@@ -2,7 +2,7 @@
 """
 Created on Mon Aug 30 22:57:11 2021
 
-@author: D99003734
+@author: Jennifer Waylan
 """
 from datetime import datetime
 from stock_class import Stock, DailyData
@@ -14,7 +14,7 @@ import csv
 def add_stock(stock_list):
    option = ""
    while option != "0":
-        print("\nAdd Stock -----")
+        print("\nAdd Stock ----")
         symbol = input("Enter ticker symbol: ").upper()
         name = input("Enter company name: ")
         shares = float(input("Enter number of shares: "))
@@ -25,7 +25,7 @@ def add_stock(stock_list):
 
 # Remove stock and all daily data
 def delete_stock(stock_list):
-    print("\nDelete Stock -----")
+    print("\nDelete Stock ----")
     print("Stock List: [", end="")
     for stock in stock_list:
         print(stock.symbol," ", end="")
@@ -47,7 +47,7 @@ def delete_stock(stock_list):
     
 # List stocks being tracked
 def list_stocks(stock_list):
-    print("\nStock List -----")
+    print("\nStock List ----")
     print("SYMBOL\t\tNAME\t\tSHARES")
     print("=======================================")
     for stock in stock_list:
@@ -89,7 +89,7 @@ def add_stock_data(stock_list):
 
     
 def investment_type(stock_list):
-    print("\nInvestment Account ---")
+    print("\nInvestment Account ----")
     balance = float(input("What is your initial balance: "))
     number = input("What is your account number: ")
     acct= input("\nDo you want a Traditional (t) or Robo (r) account: ")
@@ -121,17 +121,47 @@ def investment_type(stock_list):
                 temp_list.append(current_stock)
                 print("Bought ",shares,"of",symbol)
             else:
-                print("Symbol Not Found ***")
+                print("Symbol Not Found ***\n")
         trad_acct.add_stock(temp_list)
 
 
 # Function to create stock chart
 def display_stock_chart(stock_list,symbol):
-    print("This method is under construction")
+    date = []
+    price = []
+    volume = []
+    company = ""
+    for stock in stock_list:
+        if stock.symbol == symbol:
+            company = stock.name
+            for dailyData in stock.DataList:
+                date.append(dailyData.date)
+                price.append(dailyData.close)
+                volume.append(dailyData.volume)
+    plt.plot(date,price)
+    plt.xlabel('Date')
+    plt.ylabel('Price')
+    plt.title(company)
+    plt.show()
 
 # Display Chart
 def display_chart(stock_list):
-    print("This method is under construction")
+    print('\nStock Chart ----')
+    print("Stock List: [",end="")
+    for stock in stock_list:
+        print(stock.symbol + ' ',end="")
+    print("]\n")
+    symbol = input("Pick stock for chart: ").upper()
+    found = False
+    for stock in stock_list:
+        if stock.symbol == symbol:
+            found = True
+            current_stock = stock
+    if found == True:
+        display_stock_chart(stock_list, symbol)
+    else:
+        print('Symbol Not Found ***\n')
+    _ = input("Press Enter to Continue ***")
   
 
 
@@ -147,7 +177,7 @@ def display_report(stock_list):
 def main_menu(stock_list):
     option = ""
     while True:
-        print("\nStock Analyzer ---")
+        print("\nStock Analyzer ----")
         print("\t1 - Add Stock")
         print("\t2 - Delete Stock")
         print("\t3 - List stocks")
