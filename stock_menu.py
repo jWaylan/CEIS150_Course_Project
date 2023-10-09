@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 """
-Created on Mon Aug 30 22:57:11 2021
+Created on Sun Oct 9, 2023
 
 @author: Jennifer Waylan
 """
@@ -178,7 +178,7 @@ def import_stock_csv(stock_list):
     for stock in stock_list:
         if stock.symbol == symbol:
             with open(filename, newline = '') as stockdata:
-                datareader = csv.reader(stockdata, delimeter = ',')
+                datareader = csv.reader(stockdata, delimiter = ',')
                 next (datareader)
                 for row in datareader:
                     daily_data = DailyData(str(row[0]), float(row[4]), float(row[6]))
@@ -191,7 +191,7 @@ def display_report(stock_list):
     print("\nStock Report ----")
     for stock in stock_list:
         print("Report for:",stock.symbol, stock.name)
-        print("Shares:",stock.shares)
+        print("Shares:",stock.shares,"\n")
         #variable initialization
         count = 0
         price_total = 0
@@ -201,9 +201,7 @@ def display_report(stock_list):
         lowVolume = 999999999999
         highVolume = 0
 
-        startPrice = stock.DataList[0]
-        endPrice = stock.DataList[-1]
-
+        
         for daily_data in stock.DataList:
             count += 1
             price_total = price_total + daily_data.close
@@ -217,8 +215,8 @@ def display_report(stock_list):
             if daily_data.volume > highVolume:
                 highVolume = daily_data.volume
 
-            priceChange = endPrice - startPrice
-            print("\n",daily_data.date, daily_data.close, daily_data.volume)
+            priceChange = highPrice - lowPrice
+            print(daily_data.date, daily_data.close, daily_data.volume)
 
         if count > 0:
             print("\nSummary ----")
@@ -226,12 +224,12 @@ def display_report(stock_list):
             print("High Price: \t${:,.2f}".format(highPrice))
             print("Average Price: \t${:,.2f}".format(price_total/count))
             
-            print("\nLow Volume: \t",lowVolume)
-            print("High Volume: \t",highVolume)
-            print("Average Volume: \t{:.2f}".format(volume_total/count))
+            print("\nLow Volume:\t",lowVolume)
+            print("High Volume:\t",highVolume)
+            print("Average Volume:{:.2f}".format(volume_total/count))
 
-            print("\nChange in Price: \t${:,.2f}".format(priceChange))
-            print("Profit/Loss: \t${:,.2f}".format(priceChange * stock.shares))
+            print("\nChange in Price: ${:,.2f}".format(priceChange))
+            print("Profit/Loss:  \t${:,.2f}".format(priceChange * stock.shares))
         else:
             print("***No daily history")
         print("\n\n\n")
